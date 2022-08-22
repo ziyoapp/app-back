@@ -10,6 +10,24 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/news",
+     *      operationId="getNewsList",
+     *      tags={"News"},
+     *      summary="Get list of news",
+     *      description="Returns list of news",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/NewsCollection")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      )
+     * )
+     */
     public function latest(Request $request)
     {
         $limit = $request->get('limit', 5);
@@ -23,6 +41,33 @@ class NewsController extends Controller
         return NewsResource::collection($newsList);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/news/{id}",
+     *      operationId="getNewsById",
+     *      tags={"News"},
+     *      summary="Get news by id",
+     *      description="Return news by id",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="News id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/NewsResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      )
+     * )
+     */
     public function newItem($id)
     {
         $newsItem = News::query()->findOrFail($id);

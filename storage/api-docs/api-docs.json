@@ -1,0 +1,167 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bonus App API",
+        "description": "REST API documentation for - https://ziyoforum-app.uz",
+        "contact": {
+            "email": "uktamovich95@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://ziyoforum-app.uz/api/v1",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/news": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get list of news",
+                "description": "Returns list of news",
+                "operationId": "getNewsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsCollection"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
+        "/news/{id}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get news by id",
+                "description": "Return news by id",
+                "operationId": "getNewsById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "News id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "News": {
+                "title": "News",
+                "description": "News model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "News title",
+                        "type": "string",
+                        "example": "A nice news"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Description of the new project",
+                        "type": "string",
+                        "example": "This is new project's description"
+                    },
+                    "content": {
+                        "title": "Content",
+                        "description": "Content of the new project",
+                        "type": "string",
+                        "example": "This is new project's Content"
+                    },
+                    "image_url": {
+                        "title": "Image path",
+                        "description": "Image path",
+                        "type": "string",
+                        "example": "https://ziyoforum-app.uz/storage/19/360x160.png"
+                    },
+                    "published_at": {
+                        "title": "Published at",
+                        "description": "Published at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "News"
+                }
+            },
+            "NewsCollection": {
+                "title": "NewsResource",
+                "description": "News resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/News"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NewsResource"
+                }
+            },
+            "NewsResource": {
+                "title": "NewsResource",
+                "description": "News resource",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/News"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NewsResource"
+                }
+            }
+        }
+    }
+}
