@@ -4,14 +4,14 @@ namespace App\Virtual\Resources;
 
 /**
  * @OA\Schema(
- *     title="NewsCollection",
- *     description="News collection",
+ *     title="UserResource",
+ *     description="User resource",
  *     @OA\Xml(
- *         name="NewsCollection"
+ *         name="UserResource"
  *     )
  * )
  */
-class NewsCollection
+class UserResource
 {
     /**
      * @OA\Property(
@@ -19,7 +19,7 @@ class NewsCollection
      *     description="Data wrapper"
      * )
      *
-     * @var \App\Virtual\Models\News[]
+     * @var \App\Virtual\Models\User
      */
     private $data;
 }

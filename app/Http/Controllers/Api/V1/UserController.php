@@ -9,9 +9,27 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/user",
+     *      operationId="getUser",
+     *      tags={"User"},
+     *      summary="Get user by token",
+     *      description="Get user by token",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      )
+     * )
+     */
     public function getUser()
     {
-        $user = User::findOrFail(auth()->id());
+        $user = User::where('id', auth()->id())->first();
 
         return new UserResource($user);
     }

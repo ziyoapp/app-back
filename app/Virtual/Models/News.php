@@ -23,7 +23,7 @@ class News
      *
      * @var integer
      */
-    private $id;
+    public $id;
 
     /**
      * @OA\Property(

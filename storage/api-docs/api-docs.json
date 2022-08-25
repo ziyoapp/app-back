@@ -19,6 +19,66 @@
         }
     ],
     "paths": {
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User login",
+                "description": "User login",
+                "operationId": "userLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserToken"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User logout",
+                "description": "User logout",
+                "operationId": "userLogout",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
+        },
         "/news": {
             "get": {
                 "tags": [
@@ -79,10 +139,51 @@
                     }
                 }
             }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user by token",
+                "description": "Get user by token",
+                "operationId": "getUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "BadRequest": {
+                "title": "Bad Request",
+                "description": "Bad Request",
+                "properties": {
+                    "error": {
+                        "title": "Error message",
+                        "description": "Error message",
+                        "type": "string",
+                        "example": "Error text"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Bad Request"
+                }
+            },
             "News": {
                 "title": "News",
                 "description": "News model",
@@ -131,9 +232,117 @@
                     "name": "News"
                 }
             },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "first_name": {
+                        "title": "First name",
+                        "description": "First name",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "last_name": {
+                        "title": "Last name",
+                        "description": "Last name",
+                        "type": "string",
+                        "example": "Smith"
+                    },
+                    "patronymic": {
+                        "title": "Patronymic",
+                        "description": "Patronymic",
+                        "type": "string",
+                        "example": "David"
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Phone",
+                        "type": "string",
+                        "example": "998939604040"
+                    },
+                    "gender": {
+                        "title": "Gender",
+                        "description": "Gender",
+                        "type": "string",
+                        "example": "male"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "example": "example@gmail.com"
+                    },
+                    "email_verified": {
+                        "title": "Email verify",
+                        "description": "Email verify",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/UserRole"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            },
+            "UserRole": {
+                "title": "User role",
+                "description": "User role",
+                "properties": {
+                    "role_id": {
+                        "title": "Role id",
+                        "description": "Role id",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 3
+                    },
+                    "role_name": {
+                        "title": "Role name",
+                        "description": "Role name",
+                        "type": "string",
+                        "example": "user"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User role"
+                }
+            },
+            "UserToken": {
+                "title": "User token",
+                "description": "User token",
+                "properties": {
+                    "token": {
+                        "title": "Token",
+                        "description": "User token",
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9ib251cy1hcHAudGVzdFwvYXBpXC92MVwvdXNlclwvbG9naW4iLCJpYXQiOjE2NjE0NTk0MTEsImV4cCI6MTY2MTQ2MzAxMSwibmJmIjoxNjYxNDU5NDExLCJqdGkiOiJCdzBkRUFZeUFvZzVXQXk1Iiwic3ViIjo3LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ekZBR8qs1OAdU_uQAkV4DAkwdfetaaYc4HbJj0ogO8U"
+                    },
+                    "expire_in": {
+                        "title": "Token expire",
+                        "description": "oken expire",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 60
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User token"
+                }
+            },
             "NewsCollection": {
-                "title": "NewsResource",
-                "description": "News resource",
+                "title": "NewsCollection",
+                "description": "News collection",
                 "properties": {
                     "data": {
                         "title": "Data",
@@ -146,7 +355,7 @@
                 },
                 "type": "object",
                 "xml": {
-                    "name": "NewsResource"
+                    "name": "NewsCollection"
                 }
             },
             "NewsResource": {
@@ -161,6 +370,42 @@
                 "xml": {
                     "name": "NewsResource"
                 }
+            },
+            "UserResource": {
+                "title": "UserResource",
+                "description": "User resource",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "UserResource"
+                }
+            },
+            "UserLoginRequest": {
+                "title": "User login request",
+                "description": "User login request body data",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "Email",
+                        "type": "string",
+                        "example": "example@mail.ru"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "Password",
+                        "type": "string",
+                        "example": "123456"
+                    }
+                },
+                "type": "object"
             }
         }
     }

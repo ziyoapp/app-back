@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UserLoginRequest;
 use App\Models\User;
 use App\Services\V1\AuthService;
 use Illuminate\Http\Request;
@@ -21,16 +22,33 @@ class AuthController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @OA\Post(
+     *      path="/user/login",
+     *      operationId="userLogin",
+     *      tags={"User"},
+     *      summary="User login",
+     *      description="User login",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UserLoginRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserToken")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      )
+     * )
+     *
+     * @param UserLoginRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string'
-        ]);
-
         $token = $this->authService->auth(
             $request->get('email'),
             $request->get('password')
@@ -73,6 +91,23 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/user/logout",
+     *      operationId="userLogout",
+     *      tags={"User"},
+     *      summary="User logout",
+     *      description="User logout",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      )
+     * )
+     */
     public function logout()
     {
         $this->authService->logout();
