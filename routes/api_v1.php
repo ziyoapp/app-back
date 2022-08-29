@@ -29,4 +29,5 @@ Route::group(['middleware' => [
 // Auth
 Route::group(['prefix' => 'user'], function() {
     Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
 });

@@ -20,6 +20,7 @@ class UserFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'patronymic' => $this->faker->firstName(),
             'gender' => $this->faker->randomElement(['male', 'female']),
+            'birth_date' => $this->faker->randomElement(['1995-05-10', '1992-01-10', '1998-03-10', '1990-04-10']),
             'phone' => '998' . $this->faker->unique()->numerify('#########'),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),

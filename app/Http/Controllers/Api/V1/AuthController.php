@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Models\User;
 use App\Services\V1\AuthService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -46,6 +48,7 @@ class AuthController extends Controller
      *
      * @param UserLoginRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\BadRequestException
      */
     public function login(UserLoginRequest $request)
     {
@@ -59,36 +62,47 @@ class AuthController extends Controller
         );
     }
 
-    public function register(Request $request)
+    /**
+     * @OA\Post(
+     *      path="/user/register",
+     *      operationId="userRegister",
+     *      tags={"User"},
+     *      summary="User register",
+     *      description="User register",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserToken")
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     *
+     * @param UserLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register(RegisterRequest $request)
     {
-        $validate = [
-            'name' => 'required',
-            'phone' => 'required|regex:/^(998)[0-9]{9}$/'
-        ];
+        $registerData = $request->validated();
 
-        $request->validate($validate);
+        $user = $this->authService->register(array_merge($registerData, [
+            'user_lang' => $request->header('x-lang-code', 'ru')
+        ]));
 
-        if (User::where('phone', $request->phone)->exists()) {
-            return response()->json([
-                'data' => [
-                    'error' => 'Такой номер телефона уже существует'
-                ]
-            ], 400);
-        }
-
-        $userData = [
-            'first_name' => $request->first_name,
-            'phone' => $request->phone,
-            'password' => bcrypt($request->get('password')),
-            'role_id' => UserRole::USER,
-            'gender' => null,
-        ];
-
-        $user = User::create($userData);
+        //event(new Registered($user));
 
         $token = auth()->login($user);
 
-        return $this->respondWithToken($token);
+        return response()->json(
+            $this->respondWithToken($token)
+        );
     }
 
     /**

@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-//Auth::routes();
+Auth::routes([
+    'verify' => true,
+    'register' => false,
+    'password.confirm' => false,
+    'logout' => false,
+    'login' => false,
+]);
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

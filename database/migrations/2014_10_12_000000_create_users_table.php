@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('patronymic')->nullable();
             $table->enum('gender', ['male', 'female'])->default('male');
             $table->string('phone', 30)->nullable();
+            $table->date('birth_date')->nullable();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -32,7 +33,6 @@ class CreateUsersTable extends Migration
             $table->boolean('products_push_enabled')->default(1);
             $table->boolean('news_push_enabled')->default(1);
 
-            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });
