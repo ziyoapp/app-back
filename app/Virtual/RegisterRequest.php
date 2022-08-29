@@ -98,7 +98,7 @@ class RegisterRequest
      *
      * @var string
      */
-    public $password_confirm;
+    public $password_confirmation;
 
     /**
      * @OA\Property(
@@ -109,5 +109,5 @@ class RegisterRequest
      *
      * @var bool
      */
-    public $password_confirmation;
+    public $privacy_accept;
 }
