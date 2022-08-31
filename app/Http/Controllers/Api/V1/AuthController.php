@@ -56,9 +56,6 @@ class AuthController extends Controller
             $request->get('password')
         );
 
-        $qrCode = new QRCodeGenerateService();
-        $qrCode->generateForUser(auth()->id());
-
         return response()->json(
             $this->respondWithToken($token)
         );
@@ -99,6 +96,9 @@ class AuthController extends Controller
         ]));
 
         //event(new Registered($user));
+
+        $qrCode = new QRCodeGenerateService();
+        $qrCode->generateForUser($user->id);
 
         $token = auth()->login($user);
 
