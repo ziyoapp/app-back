@@ -112,15 +112,4 @@ class User
      * @var \App\Virtual\Models\UserRole
      */
     public $role;
-
-    /**
-     * @OA\Property(
-     *      title="QR code",
-     *      description="QR code",
-     *      example="http://bonus-app.test/storage/qrcodes/user_ball_add_5.svg"
-     * )
-     *
-     * @var string
-     */
-    public $qr_code;
 }

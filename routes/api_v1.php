@@ -23,6 +23,7 @@ Route::group(['middleware' => [
         Route::post('/refresh-token', 'AuthController@refresh');
 
         Route::get('/bonus', 'BonusController@getUserBonus');
+        Route::get('/qr-code', 'UserController@getQRCode');
     });
 });
 

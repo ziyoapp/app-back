@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\V1;
 
-use App\Services\V1\QRCodeGenerateService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -27,8 +26,7 @@ class UserResource extends JsonResource
             'role' => [
                 'role_id' => $this->role_id,
                 'role_name' => 'user'
-            ],
-            'qr_code' => (new QRCodeGenerateService())->getUserQRCodeSrc($this->id)
+            ]
         ];
     }
 }

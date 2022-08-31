@@ -7,7 +7,6 @@ use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Models\User;
 use App\Services\V1\AuthService;
-use App\Services\V1\QRCodeGenerateService;
 use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
@@ -96,9 +95,6 @@ class AuthController extends Controller
         ]));
 
         //event(new Registered($user));
-
-        $qrCode = new QRCodeGenerateService();
-        $qrCode->generateForUser($user->id);
 
         $token = auth()->login($user);
 

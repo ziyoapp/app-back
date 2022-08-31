@@ -15,7 +15,7 @@ class QRCodeGenerateService
             Storage::makeDirectory('public/qrcodes');
         }
 
-        $pathToFile = storage_path('app/public') . '/qrcodes/' . self::USER_ADD_BALL_PREFIX . $userId . '.svg';
+        $pathToFile = $this->getPathToQRCode($userId);
 
         QrCode::encoding('UTF-8')
                 ->size(300)
@@ -30,8 +30,17 @@ class QRCodeGenerateService
                 ->generate(json_encode(['user_id' => $userId, 'type' => 'add_ball']), $pathToFile);
     }
 
-    public function getUserQRCodeSrc(int $userId): string
+    public function getOrGenerateUserQRCodeSrc(int $userId): string
     {
+        if (! is_file($this->getPathToQRCode($userId))) {
+            $this->generateForUser($userId);
+        }
+
         return asset('storage/qrcodes/' . self::USER_ADD_BALL_PREFIX . $userId . '.svg');
+    }
+
+    protected function getPathToQRCode(int $userId): string
+    {
+        return storage_path('app/public') . '/qrcodes/' . self::USER_ADD_BALL_PREFIX . $userId . '.svg';
     }
 }
