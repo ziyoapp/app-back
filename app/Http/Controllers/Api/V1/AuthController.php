@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Models\User;
 use App\Services\V1\AuthService;
+use App\Services\V1\QRCodeGenerateService;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -56,6 +55,9 @@ class AuthController extends Controller
             $request->get('email'),
             $request->get('password')
         );
+
+        $qrCode = new QRCodeGenerateService();
+        $qrCode->generateForUser(auth()->id());
 
         return response()->json(
             $this->respondWithToken($token)
