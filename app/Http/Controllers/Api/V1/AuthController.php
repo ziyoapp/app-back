@@ -34,7 +34,7 @@ class AuthController extends Controller
      *          @OA\JsonContent(ref="#/components/schemas/UserLoginRequest")
      *      ),
      *      @OA\Response(
-     *          response=201,
+     *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/UserToken")
      *       ),
@@ -76,7 +76,7 @@ class AuthController extends Controller
      *          @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
      *      ),
      *      @OA\Response(
-     *          response=201,
+     *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/UserToken")
      *       ),
