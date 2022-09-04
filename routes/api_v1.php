@@ -10,12 +10,6 @@ Route::pattern('id', '[0-9]+');
 Route::group(['middleware' => [
     'auth', UserRole::middleware([UserRole::ADMIN, UserRole::MODERATOR, UserRole::USER])
 ]], function() {
-    // News
-    Route::group(['prefix' => 'news'], function() {
-        Route::get('/', 'NewsController@latest');
-        Route::get('{id}', 'NewsController@newItem');
-    });
-
     // User
     Route::group(['prefix' => 'user'], function() {
         Route::get('/', 'UserController@getUser');
@@ -25,6 +19,18 @@ Route::group(['middleware' => [
         Route::get('/bonus', 'BonusController@getUserBonus');
         Route::get('/qr-code', 'UserController@getQRCode');
     });
+});
+
+// News
+Route::group(['prefix' => 'news'], function() {
+    Route::get('/', 'NewsController@latest');
+    Route::get('{id}', 'NewsController@newItem');
+});
+
+// Events
+Route::group(['prefix' => 'events'], function() {
+    Route::get('/', 'EventController@eventList');
+    Route::get('{id}', 'EventController@event');
 });
 
 // Auth

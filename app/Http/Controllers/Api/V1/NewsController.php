@@ -17,6 +17,15 @@ class NewsController extends Controller
      *      tags={"News"},
      *      summary="Get list of news",
      *      description="Returns list of news",
+     *     @OA\Parameter(
+     *          name="limit",
+     *          description="List limit",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
@@ -33,6 +42,7 @@ class NewsController extends Controller
         $limit = $request->get('limit', 5);
 
         $newsList = News::query()
+                        ->whereLocale(app()->getLocale())
                         ->where('status', EntityStatus::PUBLISHED)
                         ->latest('published_at')
                         ->limit($limit)

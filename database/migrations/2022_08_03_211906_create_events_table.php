@@ -28,9 +28,10 @@ class CreateEventsTable extends Migration
 
             $table->timestamp('date_start_at');
             $table->timestamp('date_end_at')->nullable();
-            $table->text('schedule_text');
+            $table->text('schedule_text')->nullable();
 
-            $table->timestamp('published_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->enum('status', ['draft', 'publish'])->default('draft');
+            $table->timestamp('published_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->softDeletes();
             $table->timestamps();
         });
