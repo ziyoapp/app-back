@@ -23,14 +23,16 @@ Route::group(['middleware' => [
 
 // News
 Route::group(['prefix' => 'news'], function() {
-    Route::get('/', 'NewsController@latest');
+    Route::get('/', 'NewsController@newsList');
     Route::get('{id}', 'NewsController@newItem');
+    Route::get('/latest', 'NewsController@latest');
 });
 
 // Events
 Route::group(['prefix' => 'events'], function() {
     Route::get('/', 'EventController@eventList');
     Route::get('{id}', 'EventController@event');
+    Route::get('/latest', 'EventController@latest');
 });
 
 // Auth

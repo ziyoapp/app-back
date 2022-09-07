@@ -12,11 +12,11 @@ class NewsController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/news",
-     *      operationId="getNewsList",
+     *      path="/news/latest",
+     *      operationId="getLatestNews",
      *      tags={"News"},
-     *      summary="Get list of news",
-     *      description="Returns list of news",
+     *      summary="Get latest list of news",
+     *      description="Returns latest list of news",
      *     @OA\Parameter(
      *          name="limit",
      *          description="List limit",
@@ -30,16 +30,12 @@ class NewsController extends Controller
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/NewsCollection")
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      )
+     *       )
      * )
      */
     public function latest(Request $request)
     {
-        $limit = $request->get('limit', 5);
+        $limit = (int) $request->get('limit', 5);
 
         $newsList = News::query()
                         ->whereLocale(app()->getLocale())
@@ -47,6 +43,51 @@ class NewsController extends Controller
                         ->latest('published_at')
                         ->limit($limit)
                         ->get();
+
+        return NewsResource::collection($newsList);
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/news",
+     *      operationId="getNewsList",
+     *      tags={"News"},
+     *      summary="Get list of news",
+     *      description="Returns list of news",
+     *     @OA\Parameter(
+     *          name="page",
+     *          description="Page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="per_page",
+     *          description="Per page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/NewsPagination")
+     *       )
+     * )
+     */
+    public function newsList(Request $request)
+    {
+        $perPage = (int) $request->get('per_page', 15);
+
+        $newsList = News::query()
+            ->whereLocale(app()->getLocale())
+            ->where('status', EntityStatus::PUBLISHED)
+            ->latest('published_at')
+            ->paginate($perPage);
 
         return NewsResource::collection($newsList);
     }
@@ -71,11 +112,7 @@ class NewsController extends Controller
      *          response=200,
      *          description="Successful operation",
      *          @OA\JsonContent(ref="#/components/schemas/NewsResource")
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      )
+     *       )
      * )
      */
     public function newItem($id)
