@@ -55,6 +55,15 @@ class EventController extends Controller
      *      summary="Get list of events",
      *      description="Returns list of events",
      *     @OA\Parameter(
+     *          name="type",
+     *          description="Type events: simple | exclusive",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Parameter(
      *          name="page",
      *          description="Page",
      *          required=false,
