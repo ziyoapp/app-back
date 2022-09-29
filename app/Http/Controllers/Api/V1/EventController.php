@@ -81,7 +81,7 @@ class EventController extends Controller
      */
     public function eventList(Request $request)
     {
-        $type = $request->get('type', 'simple');
+        $type = $request->get('type');
         $perPage = (int) $request->get('per_page', 15);
 
         $events = Event::query();
