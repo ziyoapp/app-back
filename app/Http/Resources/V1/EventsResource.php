@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
+use App\Models\Event;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EventsResource extends JsonResource
@@ -23,6 +24,7 @@ class EventsResource extends JsonResource
                 ])
             ],
             'type' => $this->eventType(),
+            'subscribed' => $this->users()->where('user_id', auth()->id())->exists(),
             'title' => $this->trans('title'),
             'description' => $this->trans('description'),
             'content' => $this->trans('content'),

@@ -49,6 +49,17 @@ class Events
 
     /**
      * @OA\Property(
+     *      title="User subscribe",
+     *      description="User subscribe",
+     *      example="true"
+     * )
+     *
+     * @var bool
+     */
+    public $subscribed;
+
+    /**
+     * @OA\Property(
      *      title="Title",
      *      description="News title",
      *      example="A nice news"

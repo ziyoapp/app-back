@@ -68,4 +68,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return [];
     }
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class)
+            ->withPivot('price_ball')
+            ->withTimestamps();
+    }
 }

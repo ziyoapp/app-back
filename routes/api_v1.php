@@ -19,20 +19,23 @@ Route::group(['middleware' => [
         Route::get('/bonus', 'BonusController@getUserBonus');
         Route::get('/qr-code', 'UserController@getQRCode');
     });
-});
 
-// News
-Route::group(['prefix' => 'news'], function() {
-    Route::get('/', 'NewsController@newsList');
-    Route::get('{id}', 'NewsController@newItem');
-    Route::get('/latest', 'NewsController@latest');
-});
+    // News
+    Route::group(['prefix' => 'news'], function() {
+        Route::get('/', 'NewsController@newsList');
+        Route::get('{id}', 'NewsController@newItem');
+        Route::get('/latest', 'NewsController@latest');
+    });
 
-// Events
-Route::group(['prefix' => 'events'], function() {
-    Route::get('/', 'EventController@eventList');
-    Route::get('{id}', 'EventController@event');
-    Route::get('/latest', 'EventController@latest');
+    // Events
+    Route::group(['prefix' => 'events'], function() {
+        Route::get('/', 'EventController@eventList');
+        Route::get('{id}', 'EventController@event');
+        Route::get('/latest', 'EventController@latest');
+
+        Route::post('/{id}/add-user', 'EventController@addUser');
+        Route::post('/{id}/undo-user', 'EventController@undoUser');
+    });
 });
 
 // Auth

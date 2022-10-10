@@ -54,4 +54,16 @@ class Event extends Model implements HasMedia
             ->addMediaCollection('default')
             ->singleFile();
     }
+
+    public function bonusLogProps()
+    {
+        return $this->morphOne(BonusLogProp::class, 'entity');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('price_ball')
+            ->withTimestamps();
+    }
 }
