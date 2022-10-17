@@ -34,7 +34,7 @@ Route::group(['middleware' => [
         Route::get('/latest', 'EventController@latest');
 
         Route::post('/{id}/add-user', 'EventController@addUser');
-        Route::post('/{id}/undo-user', 'EventController@undoUser');
+        Route::delete('/{id}/undo-user', 'EventController@undoUser');
     });
 });
 
