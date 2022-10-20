@@ -18,6 +18,8 @@ Route::group(['middleware' => [
 
         Route::get('/bonus', 'BonusController@getUserBonus');
         Route::get('/qr-code', 'UserController@getQRCode');
+
+        Route::get('/bonus-history', 'BonusController@userBonusHistory');
     });
 
     // News
