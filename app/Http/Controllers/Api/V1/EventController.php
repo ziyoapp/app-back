@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\BonusLogOperation;
+use App\Enums\BonusLogType;
 use App\Enums\EntityStatus;
 use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\EventsListResource;
 use App\Http\Resources\V1\EventsResource;
+use App\Models\BonusLogProp;
 use App\Models\Event;
+use App\Services\V1\BonusLogService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    /**
+     * @var BonusLogService
+     */
+    protected $bonusLogService;
+
+    public function __construct()
+    {
+        $this->bonusLogService = new BonusLogService();
+    }
+
     /**
      * @OA\Get(
      *      path="/events/latest",
@@ -138,6 +152,32 @@ class EventController extends Controller
                         ->findOrFail($id);
 
         return new EventsResource($event);
+    }
+
+    public function addBalanceForEvent($id)
+    {
+        $event = Event::query()
+            ->where('status', EntityStatus::PUBLISHED)
+            ->findOrFail($id);
+
+        # todo validation already added ball
+
+        if ((float)$event->ball <= 0) {
+            throw new BadRequestException(__('bad_request.ball_zero'));
+        }
+
+        $this->bonusLogService->updateUserBalance(
+            auth()->id(),
+            $event->ball,
+            BonusLogType::EVENT,
+            BonusLogOperation::ADD,
+            new BonusLogProp([
+                'entity_id' => $event->id,
+                'entity_type' => Event::class
+            ])
+        );
+
+        return response()->noContent(200);
     }
 
     /**

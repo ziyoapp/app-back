@@ -40,6 +40,17 @@ Route::group(['middleware' => [
     });
 });
 
+Route::group(['middleware' => [
+    'auth', UserRole::middleware([UserRole::ADMIN, UserRole::MODERATOR])
+]], function() {
+
+    // Events
+    Route::group(['prefix' => 'events'], function() {
+        Route::post('/{id}/add-ball', 'EventController@addBalanceForEvent');
+    });
+});
+
+
 // Auth
 Route::group(['prefix' => 'user'], function() {
     Route::post('/login', 'AuthController@login');
