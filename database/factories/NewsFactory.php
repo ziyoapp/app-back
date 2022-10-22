@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EntityStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,7 +23,7 @@ class NewsFactory extends Factory
             'title' => $title,
             'description' => $this->faker->paragraph(5, true),
             'content' => '<p>' . $this->faker->paragraph(15, true) . '</p>',
-            'status' => 'publish'
+            'status' => EntityStatus::PUBLISHED
         ];
     }
 }
