@@ -154,6 +154,28 @@ class EventController extends Controller
         return new EventsResource($event);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/events/{id}/add-ball",
+     *      operationId="addBallForEvent",
+     *      tags={"Admin events"},
+     *      summary="Add ball for event",
+     *      description="Add ball for event",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Event id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     * )
+     */
     public function addBalanceForEvent($id)
     {
         $event = Event::query()
