@@ -18,6 +18,12 @@ class ProductSeeder extends Seeder
         ProductCategory::all()->each(function (ProductCategory $productCategory) {
             $products = Product::factory(5)->create();
 
+            $products->each(function ($product) {
+                for ($i = 0; $i < 3; $i++) {
+                    $product->addMediaFromUrl('https://dummyimage.com/360x260')->toMediaCollection('products');
+                }
+            });
+
             $productCategory->products()->sync($products->pluck('id'));
         });
     }

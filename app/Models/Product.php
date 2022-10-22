@@ -22,8 +22,21 @@ class Product extends Model implements HasMedia
         'status',
     ];
 
+    protected $casts = [
+        'price' => 'float',
+        'price_old' => 'float',
+        'quantity' => 'int',
+        'sort' => 'int',
+    ];
+
     public function categories()
     {
         return $this->belongsToMany(ProductCategory::class, 'category_product');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('products');
     }
 }

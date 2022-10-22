@@ -14,6 +14,8 @@ class ProductCategory extends Model
         'sort',
     ];
 
+    protected $hidden = ['pivot'];
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'category_product');

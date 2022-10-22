@@ -42,6 +42,11 @@ Route::group(['middleware' => [
     // Shop
     Route::group(['prefix' => 'shop'], function() {
         Route::get('/categories', 'ProductCategoryController@categories');
+
+        Route::get('/categories/{categoryId}/products', 'ProductController@categoryProducts')
+            ->where('categoryId', '[0-9]+|all');
+
+        Route::get('/products/{id}', 'ProductController@product');
     });
 });
 
