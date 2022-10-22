@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
 
 class BonusController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/user/bonus",
+     *      operationId="getUserBonus",
+     *      tags={"User"},
+     *      summary="Get user bonus",
+     *      description="Get user bonus",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/UserBonusResource")
+     *       )
+     * )
+     */
     public function getUserBonus()
     {
         $userBonus = Bonus::query()
@@ -21,6 +35,38 @@ class BonusController extends Controller
         return new BonusResource($userBonus);
     }
 
+    /**
+     * @OA\Get(
+     *      path="/user/bonus-history",
+     *      operationId="getBonusHistory",
+     *      tags={"User"},
+     *      summary="Get list of bonus history",
+     *      description="Returns list of bonus history",
+     *     @OA\Parameter(
+     *          name="page",
+     *          description="Page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="per_page",
+     *          description="Per page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/BonusHistoryPagination")
+     *       )
+     * )
+     */
     public function userBonusHistory(Request $request)
     {
         $perPage = (int) $request->get('per_page', 15);

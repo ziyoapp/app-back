@@ -32,7 +32,7 @@ class BonusHistoryResource extends JsonResource
             }),
             'ball' => (string) ($this->ball < 0 ? $this->ball : '+' . $this->ball),
             'currency' => 'YC',
-            'comment' => $this->comment ?? '',
+            #'comment' => $this->comment ?? '',
             'date' => $this->created_at->format('d.m.Y H:i')
         ];
     }
