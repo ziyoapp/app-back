@@ -38,6 +38,11 @@ Route::group(['middleware' => [
         Route::post('/{id}/add-user', 'EventController@addUser');
         Route::delete('/{id}/undo-user', 'EventController@undoUser');
     });
+
+    // Shop
+    Route::group(['prefix' => 'shop'], function() {
+        Route::get('/categories', 'ProductCategoryController@categories');
+    });
 });
 
 Route::group(['middleware' => [
