@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Models\Bonus;
 use App\Models\BonusLog;
 use App\Models\Event;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -43,16 +44,16 @@ class BonusLogSeeder extends Seeder
                     ]);
                 });
 
-            /*BonusLog::query()
+            BonusLog::query()
                 ->where('user_id', $user->id)
                 ->where('type', BonusLogType::PRODUCT)
                 ->get()
                 ->each(function ($bonus_log) {
                     $bonus_log->props()->create([
-                        'entity_type' => Event::class,
-                        'entity_id' => Event::query()->inRandomOrder()->first()->id
+                        'entity_type' => Product::class,
+                        'entity_id' => Product::query()->inRandomOrder()->first()->id
                     ]);
-                });*/
+                });
         });
     }
 }

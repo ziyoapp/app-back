@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             NewsSeeder::class,
             EventSeeder::class,
-            BonusSeeder::class,
-            BonusLogSeeder::class,
             ProductCategorySeeder::class,
             ProductSeeder::class,
+            BonusSeeder::class,
+            BonusLogSeeder::class,
         ]);
     }
 }

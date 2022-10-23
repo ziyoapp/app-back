@@ -36,6 +36,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('d7a[5{UNt`x/rbC-')
         ]);
 
+        User::factory(1)->create([
+            'role_id' => UserRole::USER,
+            'email' => 'john@bonus-app.uz',
+            'first_name' => 'John',
+            'last_name' => 'Wick',
+        ]);
+
         User::factory(10)->create([
             'role_id' => UserRole::USER
         ]);
