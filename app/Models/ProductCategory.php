@@ -16,6 +16,10 @@ class ProductCategory extends Model
 
     protected $hidden = ['pivot'];
 
+    protected $casts = [
+        'products_count' => 'integer'
+    ];
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'category_product');
