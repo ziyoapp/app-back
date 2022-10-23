@@ -46,7 +46,10 @@ Route::group(['middleware' => [
         Route::get('/categories/{categoryId}/products', 'ProductController@categoryProducts')
             ->where('categoryId', '[0-9]+|all');
 
-        Route::get('/products/{id}', 'ProductController@product');
+        Route::group(['prefix' => 'products'], function() {
+            Route::get('{id}', 'ProductController@product');
+            Route::post('{id}/buy', 'ProductController@productBuy');
+        });
     });
 });
 

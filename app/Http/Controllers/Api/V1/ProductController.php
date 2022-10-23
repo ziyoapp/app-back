@@ -6,10 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ProductListResource;
 use App\Http\Resources\V1\ProductResource;
 use App\Models\Product;
+use App\Services\V1\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    /**
+     * @var ProductService
+     */
+    protected $productService;
+
+
+    public function __construct()
+    {
+        $this->productService = new ProductService();
+    }
+
     /**
      * @OA\Get(
      *      path="/shop/categories/{id}/products",
@@ -66,6 +78,15 @@ class ProductController extends Controller
      *      tags={"Shop"},
      *      summary="Get product by id",
      *      description="Get product by id",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Product id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
@@ -80,5 +101,39 @@ class ProductController extends Controller
         }])->findOrFail($id);
 
         return new ProductResource($product);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/shop/products/{id}/buy",
+     *      operationId="buyProductById",
+     *      tags={"Shop"},
+     *      summary="Buy product",
+     *      description="Buy product by id",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Product id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *     @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      )
+     * )
+     */
+    public function productBuy($id)
+    {
+        $this->productService->productBuy($id, auth()->id());
+
+        return response()->noContent(200);
     }
 }

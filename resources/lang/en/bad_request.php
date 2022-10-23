@@ -7,4 +7,6 @@ return [
     'event_user_already_exists' => 'Вы уже подписаны на событие',
     'event_time_detach_over' => 'Вы уже не можете отписаться от события',
     'ball_zero' => 'Сумма балла равно - 0',
+    'product_buy_price' => 'Недостаточно баллов для покупки',
+    'product_buy_quantity' => 'Этот продукт закончился',
 ];

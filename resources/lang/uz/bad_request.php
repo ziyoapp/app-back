@@ -7,4 +7,6 @@ return [
     'event_user_already_exists' => 'Siz allaqachon tadbirga obuna bo\'lgansiz',
     'event_time_detach_over' => 'Siz endi tadbirga obunani bekor qila olmaysiz',
     'ball_zero' => 'Сумма балла равно - 0',
+    'product_buy_price' => 'Недостаточно баллов для покупки',
+    'product_buy_quantity' => 'Этот продукт закончился',
 ];

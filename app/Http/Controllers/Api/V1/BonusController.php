@@ -29,8 +29,7 @@ class BonusController extends Controller
     {
         $userBonus = Bonus::query()
                             ->select(['ball'])
-                            ->where('user_id', auth()->id())
-                            ->first();
+                            ->firstOrCreate(['user_id' => auth()->id()]);
 
         return new BonusResource($userBonus);
     }

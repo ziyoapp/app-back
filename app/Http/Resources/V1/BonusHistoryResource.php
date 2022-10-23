@@ -25,7 +25,9 @@ class BonusHistoryResource extends JsonResource
 
                     return __('bonus.bonus_event_type') . ': ' . $eventNames;
                 } else if ($this->type === BonusLogType::PRODUCT) {
-                    return __('bonus.bonus_product_type') . ': Тест продукт';
+                    $productNames = $this->props->pluck('entity')->pluck('name')->implode(', ');
+
+                    return __('bonus.bonus_product_type') . ': ' . $productNames;
                 }
 
                 return $this->operation === BonusLogOperation::ADD ? __('bonus.balance_added') : __('bonus.balance_minus');
