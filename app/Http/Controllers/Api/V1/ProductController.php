@@ -68,6 +68,8 @@ class ProductController extends Controller
             });
         }
 
+        $products->orderByDesc('sort');
+
         return ProductListResource::collection($products->paginate($perPage));
     }
 
