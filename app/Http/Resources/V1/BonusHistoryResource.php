@@ -18,7 +18,7 @@ class BonusHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'opration_type' => $this->operation,
+            'operation_type' => $this->operation,
             'name' => $this->when($this->type, function () {
                 if ($this->type === BonusLogType::EVENT) {
                     $eventNames = $this->props->pluck('entity')->pluck('title')->implode(', ');
