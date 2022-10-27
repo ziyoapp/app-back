@@ -16,6 +16,8 @@ Route::group(['middleware' => [
         Route::post('/logout', 'AuthController@logout');
         Route::post('/refresh-token', 'AuthController@refresh');
 
+        Route::post('/update', 'UserController@userUpdate');
+
         Route::get('/bonus', 'BonusController@getUserBonus');
         Route::get('/qr-code', 'UserController@getQRCode');
 

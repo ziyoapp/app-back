@@ -71,6 +71,17 @@ class User
 
     /**
      * @OA\Property(
+     *      title="Birth date",
+     *      description="Birth date",
+     *      example="20-05-1995"
+     * )
+     *
+     * @var string
+     */
+    public $birth_date;
+
+    /**
+     * @OA\Property(
      *      title="Gender",
      *      description="Gender",
      *      example="male"
