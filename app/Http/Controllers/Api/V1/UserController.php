@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UserQuestionRequest;
 use App\Http\Requests\V1\UserUpdateRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use App\Services\V1\QRCodeGenerateService;
+use App\Services\V1\UserQuestionService;
 use App\Services\V1\UserService;
 use Illuminate\Http\Request;
 
@@ -98,5 +100,44 @@ class UserController extends Controller
         $user = $userService->update(auth()->id(), $validatedData);
 
         return new UserResource($user);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/question",
+     *      operationId="userQuestion",
+     *      tags={"User"},
+     *      summary="User question",
+     *      description="User question",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UserQuestionRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     *
+     * @param UserQuestionRequest $request
+     * @param UserQuestionService $userQuestionService
+     * @return \Illuminate\Http\Response
+     */
+    public function userQuestion(UserQuestionRequest $request, UserQuestionService $userQuestionService)
+    {
+        $validatedData = $request->validated();
+
+        if (!empty(auth()->id())) {
+            $validatedData['user_id'] = auth()->id();
+        }
+
+        $userQuestionService->store($validatedData);
+
+        return response()->noContent(200);
     }
 }

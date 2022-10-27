@@ -70,4 +70,6 @@ Route::group(['middleware' => [
 Route::group(['prefix' => 'user'], function() {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
+
+    Route::post('/question', 'UserController@userQuestion');
 });
