@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use App\Models\News;
+use App\Services\Traits\UploadImage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class NewsService
 {
+    use UploadImage;
+
     public function create(array $data): News
     {
         DB::beginTransaction();
@@ -20,7 +23,7 @@ class NewsService
                 ])
             );
 
-            if ($data['image']) {
+            if (!empty($data['image'])) {
                 $this->uploadPicture($news, $data['image']);
                 $news->load('media');
             }
@@ -47,7 +50,7 @@ class NewsService
                 ])
             );
 
-            if ($data['image']) {
+            if (!empty($data['image'])) {
                 $news->media()->first()->delete();
                 $this->uploadPicture($news, $data['image']);
                 $news->load('media');
@@ -66,10 +69,5 @@ class NewsService
     {
         $news = News::query()->orderBy('published_at', $order);
         return $news->paginate($perPage);
-    }
-
-    protected function uploadPicture(News $news, $image)
-    {
-        $news->addMedia($image)->toMediaCollection('news');
     }
 }
