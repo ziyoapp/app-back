@@ -11,5 +11,21 @@ Route::post('/login', 'AuthController@dashboardLogin');
 Route::group(['middleware' => [
     'auth', UserRole::middleware([UserRole::ADMIN, UserRole::MODERATOR])
 ]], function() {
-    //
+    // News
+    Route::group(['prefix' => 'news'], function () {
+        Route::get('/list', 'NewsController@list');
+        Route::post('/', 'NewsController@create');
+        Route::get('/{id}', 'NewsController@item');
+        Route::put('/{id}', 'NewsController@update');
+        Route::delete('/{id}', 'NewsController@delete');
+    });
+
+    // Events
+    Route::group(['prefix' => 'events'], function () {
+        Route::get('/list', 'EventController@list');
+        Route::post('/', 'EventController@create');
+        Route::get('/{id}', 'EventController@item');
+        Route::put('/{id}', 'EventController@update');
+        Route::delete('/{id}', 'EventController@delete');
+    });
 });

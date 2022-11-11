@@ -24,6 +24,10 @@ class News extends Model implements HasMedia
         'published_at' => 'datetime'
     ];
 
+    protected $hidden = [
+        'locale'
+    ];
+
     protected $with = ['media'];
 
     public function getPicture()
@@ -38,7 +42,7 @@ class News extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('default')
+            ->addMediaCollection('news')
             ->singleFile();
     }
 }
