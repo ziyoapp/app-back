@@ -107,7 +107,10 @@ class NewsController extends Controller
      *      description="Create news",
      *     @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardNewsRequest")
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/DashboardNewsRequest")
+     *         )
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -138,7 +141,10 @@ class NewsController extends Controller
      *      description="Update news",
      *     @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardNewsRequest")
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/DashboardNewsRequest")
+     *         )
      *      ),
      *     @OA\Parameter(
      *          name="id",
