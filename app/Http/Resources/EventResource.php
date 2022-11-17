@@ -25,15 +25,15 @@ class EventResource extends JsonResource
             'ball' => $this->ball ?? 0,
             'price_ball' => $this->price_ball ?? 0,
             'register_count' => $this->register_count,
-            'date_start' => $this->date_start_at,
-            'date_end' => $this->date_end_at ?? '',
+            'date_start' => $this->date_start_at->format('Y-m-d H:i:s'),
+            'date_end' => $this->date_end_at ? $this->date_end_at->format('Y-m-d H:i:s') : '',
             'schedule_text' => $this->schedule_text ?? '',
             'status' => $this->status,
             'picture' => $this->when($media, [
                 'id' => $media->id ?? 0,
                 'src' => method_exists($media, 'getUrl') ? $media->getUrl() : ''
             ], []),
-            'published_at' => $this->published_at
+            'published_at' => $this->published_at->format('Y-m-d H:i:s')
         ];
     }
 }

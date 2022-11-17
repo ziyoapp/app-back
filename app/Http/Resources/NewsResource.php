@@ -26,7 +26,7 @@ class NewsResource extends JsonResource
                 'id' => $media->id,
                 'src' => $media->getUrl()
             ], []),
-            'published_at' => $this->published_at
+            'published_at' => $this->published_at->format('Y-m-d H:i:s')
         ];
     }
 }
