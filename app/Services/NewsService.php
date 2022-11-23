@@ -51,7 +51,12 @@ class NewsService
             );
 
             if (!empty($data['image'])) {
-                $news->media()->first()->delete();
+                $imgMedia = $news->media()->first();
+
+                if (!empty($imgMedia)) {
+                    $imgMedia->delete();
+                }
+
                 $this->uploadPicture($news, $data['image']);
                 $news->load('media');
             }

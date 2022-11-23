@@ -60,7 +60,12 @@ class EventService
             );
 
             if (!empty($data['image'])) {
-                $event->media()->first()->delete();
+                $imgMedia = $event->media()->first();
+
+                if (!empty($imgMedia)) {
+                    $imgMedia->delete();
+                }
+
                 $this->uploadPicture($event, $data['image']);
                 $event->load('media');
             }
