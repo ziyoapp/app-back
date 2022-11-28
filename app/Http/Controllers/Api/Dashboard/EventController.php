@@ -134,7 +134,7 @@ class EventController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *      path="/dashboard/events/{id}",
      *      operationId="updateEventsDash",
      *      tags={"Dashboard Events"},

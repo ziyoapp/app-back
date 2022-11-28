@@ -9,6 +9,6 @@ trait UploadImage
 {
     protected function uploadPicture(Model $model, UploadedFile $image)
     {
-        $model->addMedia($image)->toMediaCollection();
+        $model->addMedia($image)->toMediaCollection($model->getTable());
     }
 }

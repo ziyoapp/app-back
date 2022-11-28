@@ -133,7 +133,7 @@ class NewsController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *      path="/dashboard/news/{id}",
      *      operationId="UpdateNewsDash",
      *      tags={"Dashboard News"},
