@@ -116,7 +116,7 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardEventsRequest")
+     *          @OA\JsonContent(ref="#/components/schemas/DashboardEventsResource")
      *       ),
      *     @OA\Response(
      *          response=422,
@@ -134,7 +134,7 @@ class EventController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *      path="/dashboard/events/{id}",
      *      operationId="updateEventsDash",
      *      tags={"Dashboard Events"},
@@ -168,7 +168,7 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardEventsRequest")
+     *          @OA\JsonContent(ref="#/components/schemas/DashboardEventsResource")
      *       ),
      *     @OA\Response(
      *          response=422,
