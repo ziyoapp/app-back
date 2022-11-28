@@ -17,7 +17,8 @@ class ProductCategory extends Model
     protected $hidden = ['pivot'];
 
     protected $casts = [
-        'products_count' => 'integer'
+        'products_count' => 'integer',
+        'sort' => 'integer'
     ];
 
     public function products()

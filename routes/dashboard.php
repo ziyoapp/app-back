@@ -28,4 +28,13 @@ Route::group(['middleware' => [
         Route::put('/{id}', 'EventController@update');
         Route::delete('/{id}', 'EventController@delete');
     });
+
+    // Shop category
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('/', 'ProductCategoryController@getCategories');
+        Route::post('/', 'ProductCategoryController@create');
+        Route::get('/{id}', 'ProductCategoryController@getItem');
+        Route::put('/{id}', 'ProductCategoryController@update');
+        Route::delete('/{id}', 'ProductCategoryController@delete');
+    });
 });
