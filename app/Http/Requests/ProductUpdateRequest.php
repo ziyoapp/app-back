@@ -33,7 +33,7 @@ class ProductUpdateRequest extends FormRequest
             'price_old' => ['nullable', 'integer'],
             'quantity' => ['required', 'integer'],
             'category_id' => ['required', 'exists:product_categories,id'],
-            'images' => ['array'],
+            #'images' => ['array'],
             'images.*' => ['image', 'mimes:jpg,png,jpeg'],
             'status' => ['string', 'in:' . $statuses],
             'sort' => ['nullable','integer'],
