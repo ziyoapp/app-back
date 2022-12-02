@@ -10,6 +10,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProductController extends Controller
 {
@@ -273,6 +274,36 @@ class ProductController extends Controller
     {
         $product = Product::withoutGlobalScope('published')->findOrFail($productId);
         $product->delete();
+
+        return response()->json();
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/dashboard/image/{id}",
+     *      operationId="deleteImageById",
+     *      tags={"Dashboard"},
+     *      summary="Delete image by id",
+     *      description="Delete image by id",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Image id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     * )
+     */
+    public function deleteImage(int $mediaId)
+    {
+        $media = Media::query()->findOrFail($mediaId);
+        $media->delete();
 
         return response()->json();
     }

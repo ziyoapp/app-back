@@ -48,4 +48,6 @@ Route::group(['middleware' => [
         Route::put('/{id}', 'ProductController@update');
         Route::delete('/{id}', 'ProductController@delete');
     });
+
+    Route::delete('/image/{id}', 'ProductController@deleteImage');
 });
