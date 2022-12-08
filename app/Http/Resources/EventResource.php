@@ -33,7 +33,7 @@ class EventResource extends JsonResource
                 'id' => $media->id ?? 0,
                 'src' => method_exists($media, 'getUrl') ? $media->getUrl() : ''
             ], []),
-            'published_at' => $this->published_at->format('Y-m-d H:i:s')
+            'published_date' => $this->published_at->format('Y-m-d H:i:s')
         ];
     }
 }
