@@ -138,4 +138,25 @@ class ProductController extends Controller
 
         return response()->noContent(200);
     }
+
+    /**
+     * @OA\Get(
+     *      path="/shop/products/random",
+     *      operationId="getRandomProducts",
+     *      tags={"Shop"},
+     *      summary="Get random products",
+     *      description="Get random products",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ProductsCollection")
+     *       )
+     * )
+     */
+    public function getRandomProducts()
+    {
+        $products = Product::query()->inRandomOrder()->limit(3)->get();
+
+        return ProductListResource::collection($products);
+    }
 }
