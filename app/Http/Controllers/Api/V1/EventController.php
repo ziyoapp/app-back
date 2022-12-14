@@ -155,6 +155,98 @@ class EventController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/events/category/{stringId}",
+     *      operationId="getEventsByCategory",
+     *      tags={"Events"},
+     *      summary="Get list of events",
+     *      description="Get list of events",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/EventsPagination")
+     *       )
+     * )
+     */
+    public function categoryEvent(string $eventCategoryId, Request $request)
+    {
+        $events = Event::query()->where('status', EntityStatus::PUBLISHED);
+        $perPage = (int) $request->get('per_page', 15);
+
+        switch ($eventCategoryId) {
+            case 'new':
+                $events->where('date_start_at', '>', now()->toDateTimeString());
+                break;
+            case 'free':
+                $events->whereIn('price_ball', [0, null]);
+                break;
+            case 'exclusive':
+                $events->where('price_ball', '>', 0);
+                break;
+            case 'past':
+                $events->where('date_start_at', '<', now()->toDateTimeString());
+                break;
+        }
+
+        return EventsListResource::collection($events->paginate($perPage));
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/events/category",
+     *      operationId="getEventsCategories",
+     *      tags={"Events"},
+     *      summary="Get list of event categories",
+     *      description="Get list of event categories",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/EventCategoryCollection")
+     *       )
+     * )
+     */
+    public function eventsCategory()
+    {
+        $event = Event::query()->where('status', EntityStatus::PUBLISHED);
+
+        $eventCategories = collect([
+            [
+                'id' => 'all',
+                'name' => __('Все события'),
+                'events_count' => $event->count()
+            ],
+            [
+                'id' => 'new',
+                'name' => __('Новые'),
+                'events_count' => $event
+                    ->where('date_start_at', '>', now()->toDateTimeString())->count()
+            ],
+            [
+                'id' => 'free',
+                'name' => __('Бесплатные'),
+                'events_count' => $event
+                    ->whereIn('price_ball', [0, null])->count()
+            ],
+            [
+                'id' => 'exclusive',
+                'name' => __('Эксклюзивные'),
+                'events_count' => $event
+                    ->where('price_ball', '>', 0)->count()
+            ],
+            [
+                'id' => 'past',
+                'name' => __('Прошедшие'),
+                'events_count' => $event
+                    ->where('date_start_at', '<', now()->toDateTimeString())->count()
+            ]
+        ]);
+
+        return response()->json([
+            'data' => $eventCategories
+        ]);
+    }
+
+    /**
      * @OA\Post(
      *      path="/events/{id}/add-ball",
      *      operationId="addBallForEvent",

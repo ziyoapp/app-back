@@ -36,6 +36,9 @@ Route::group(['middleware' => [
         Route::get('/', 'EventController@eventList');
         Route::get('{id}', 'EventController@event');
         Route::get('/latest', 'EventController@latest');
+        Route::get('/category', 'EventController@eventsCategory');
+        Route::get('/category/{eventCategoryId}', 'EventController@categoryEvent')
+            ->where('eventCategoryId', 'all|free|past|new|exclusive');
 
         Route::post('/{id}/add-user', 'EventController@addUser');
         Route::delete('/{id}/undo-user', 'EventController@undoUser');
@@ -50,6 +53,7 @@ Route::group(['middleware' => [
 
         Route::group(['prefix' => 'products'], function() {
             Route::get('{id}', 'ProductController@product');
+            Route::get('/random', 'ProductController@getRandomProducts');
             Route::post('{id}/buy', 'ProductController@productBuy');
         });
     });
