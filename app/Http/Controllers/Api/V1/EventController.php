@@ -159,7 +159,7 @@ class EventController extends Controller
      *      path="/events/category/{stringId}",
      *      operationId="getEventsByCategory",
      *      tags={"Events"},
-     *      summary="Get list of events",
+     *      summary="Get list of events [all | new | free | exclusive | past]",
      *      description="Get list of events",
      *      @OA\Response(
      *          response=200,
