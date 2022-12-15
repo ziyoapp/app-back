@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Services\Traits\UploadImage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EventService
 {
@@ -22,10 +23,18 @@ class EventService
         DB::beginTransaction();
 
         try {
+            if (Str::contains('PM', $data['date_start']) || Str::contains('AM', $data['date_start'])) {
+                $start_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_start']);
+                $end_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_end']);
+            } else {
+                $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $data['date_start']);
+                $end_date = Carbon::createFromFormat('Y-m-d H:i:s', $data['date_end']);
+            }
+
             $event = Event::create(
                 array_merge($data, [
-                    'date_start_at' => Carbon::createFromFormat('Y-m-d H:i:s', $data['date_start']),
-                    'date_end_at' => $data['date_end'] ? Carbon::createFromFormat('Y-m-d H:i:s', $data['date_end']) : null,
+                    'date_start_at' => $start_date,
+                    'date_end_at' => $data['date_end'] ? $end_date : null,
                     'published_at' => (!empty($data['published_date'])) ? $data['published_date'] : now()
                 ])
             );
@@ -51,10 +60,18 @@ class EventService
         DB::beginTransaction();
 
         try {
+            if (Str::contains('PM', $data['date_start']) || Str::contains('AM', $data['date_start'])) {
+                $start_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_start']);
+                $end_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_end']);
+            } else {
+                $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $data['date_start']);
+                $end_date = Carbon::createFromFormat('Y-m-d H:i:s', $data['date_end']);
+            }
+
             $event->update(
                 array_merge($data, [
-                    'date_start_at' => Carbon::createFromFormat('Y-m-d H:i:s', $data['date_start']),
-                    'date_end_at' => !empty($data['date_end']) ? Carbon::createFromFormat('Y-m-d H:i:s', $data['date_end']) : null,
+                    'date_start_at' => $start_date,
+                    'date_end_at' => !empty($data['date_end']) ? $end_date : null,
                     'published_at' => Carbon::createFromFormat('Y-m-d H:i:s', $data['published_date'])
                 ])
             );
