@@ -42,7 +42,7 @@ class News extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection()
+            ->addMediaCollection('default')
             ->singleFile();
     }
 }
