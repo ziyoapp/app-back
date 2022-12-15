@@ -23,7 +23,7 @@ class EventService
         DB::beginTransaction();
 
         try {
-            if (Str::contains('PM', $data['date_start']) || Str::contains('AM', $data['date_start'])) {
+            if (Str::contains($data['date_start'], 'PM') || Str::contains($data['date_start'], 'AM')) {
                 $start_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_start']);
                 $end_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_end']);
             } else {
@@ -60,7 +60,7 @@ class EventService
         DB::beginTransaction();
 
         try {
-            if (Str::contains('PM', $data['date_start']) || Str::contains('AM', $data['date_start'])) {
+            if (Str::contains($data['date_start'], 'PM') || Str::contains($data['date_start'], 'AM')) {
                 $start_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_start']);
                 $end_date = Carbon::createFromFormat('Y-m-d g:i:s A', $data['date_end']);
             } else {
