@@ -50,6 +50,6 @@ class Product extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection();
+            ->addMediaCollection('default');
     }
 }
