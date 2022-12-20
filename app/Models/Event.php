@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EntityStatus;
 use App\Translation\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,20 @@ class Event extends Model implements HasMedia
         }
 
         return 'simple';
+    }
+
+    public static function currentDayActiveEvents()
+    {
+        return Event::query()
+            ->whereDate('date_start_at', '<=', now()->toDateString())
+            ->where(function ($query) {
+                $query->whereDate('date_end_at', '>', now()->toDateString())
+                    ->orWhereDate('date_start_at', '=', now()->toDateString());
+            })
+            ->where('status', EntityStatus::PUBLISHED)
+            ->orderBy('date_start_at')
+            ->limit(500)
+            ->get();
     }
 
     public function registerMediaCollections(): void

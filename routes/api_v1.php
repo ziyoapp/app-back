@@ -66,6 +66,7 @@ Route::group(['middleware' => [
     // Events
     Route::group(['prefix' => 'events'], function() {
         Route::post('/{id}/add-ball', 'EventController@addBalanceForEvent');
+        Route::get('/active/{id}/user', 'EventController@getActiveEvents');
     });
 });
 
