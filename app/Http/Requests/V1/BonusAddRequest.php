@@ -24,7 +24,8 @@ class BonusAddRequest extends FormRequest
     public function rules()
     {
         return [
-            'ball' => 'required|integer|min:1'
+            'user_id' => 'required|integer|exists:users,id',
+            #'ball' => 'required|integer|min:1'
         ];
     }
 }

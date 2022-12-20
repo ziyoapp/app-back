@@ -7,12 +7,15 @@ use App\Enums\BonusLogType;
 use App\Enums\EntityStatus;
 use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\BonusAddRequest;
 use App\Http\Resources\V1\EventsListResource;
 use App\Http\Resources\V1\EventsResource;
+use App\Models\BonusLog;
 use App\Models\BonusLogProp;
 use App\Models\Event;
 use App\Services\V1\BonusLogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -247,6 +250,57 @@ class EventController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/events/active/{user_id}/user",
+     *      operationId="getCurrentActiveEvents",
+     *      tags={"Admin events"},
+     *      summary="Get active events for admin",
+     *      description="Get active events for admin",
+     *     @OA\Parameter(
+     *          name="user_id",
+     *          description="User id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/EventsCollection")
+     *       )
+     * )
+     */
+    public function getActiveEvents($userId)
+    {
+        $eventsList = Event::currentDayActiveEvents();
+
+        $eventIds = $eventsList->pluck('id')->implode(',');
+
+        if ($eventIds) {
+            $entityType = "App\\Models\\Event";
+
+            $result = DB::select(
+                DB::raw("
+                    SELECT prop.entity_id as event_id FROM bonus_logs log
+                    INNER JOIN bonus_log_props prop ON prop.bonus_log_id = log.id AND prop.entity_type = :type AND prop.entity_id IN ({$eventIds})
+                    WHERE log.user_id = {$userId}
+                "), ['type' => $entityType]);
+
+            $ids = array_map(function ($item) {
+                return $item->event_id;
+            }, $result);
+
+            $eventsList = $eventsList->filter(function ($event) use ($ids) {
+                return !in_array($event->id, $ids);
+            });
+        }
+
+        return EventsResource::collection($eventsList);
+    }
+
+    /**
      * @OA\Post(
      *      path="/events/{id}/add-ball",
      *      operationId="addBallForEvent",
@@ -262,26 +316,30 @@ class EventController extends Controller
      *              type="integer"
      *          )
      *      ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UserIdRequest")
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
      *       )
      * )
      */
-    public function addBalanceForEvent($id)
+    public function addBalanceForEvent($id, BonusAddRequest $request)
     {
+        $userId = (int) $request->get('user_id');
+
         $event = Event::query()
             ->where('status', EntityStatus::PUBLISHED)
             ->findOrFail($id);
-
-        # todo validation already added ball
 
         if ((float)$event->ball <= 0) {
             throw new BadRequestException(__('bad_request.ball_zero'));
         }
 
         $this->bonusLogService->updateUserBalance(
-            auth()->id(),
+            $userId,
             $event->ball,
             BonusLogType::EVENT,
             BonusLogOperation::ADD,
