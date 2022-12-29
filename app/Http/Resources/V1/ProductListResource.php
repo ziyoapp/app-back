@@ -21,7 +21,7 @@ class ProductListResource extends JsonResource
             'price_old' => $this->price_old,
             'quantity' => $this->quantity,
             'categories' => $this->categories,
-            'image_url' => $this->getFirstMediaUrl('products') ?? '',
+            'image_url' => $this->getFirstMediaUrl() ?? '',
         ];
     }
 }

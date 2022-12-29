@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
 
             $products->each(function ($product) {
                 for ($i = 0; $i < 3; $i++) {
-                    $product->addMediaFromUrl('https://dummyimage.com/360x260')->toMediaCollection('products');
+                    $product->addMediaFromUrl('https://dummyimage.com/360x260')->toMediaCollection('default');
                 }
             });
 

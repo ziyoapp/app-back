@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'price_old' => $this->price_old,
             'quantity' => $this->quantity,
             'categories' => $this->categories,
-            'images' => $this->getMedia('products')->pluck('original_url'),
+            'images' => $this->getMedia()->pluck('original_url'),
         ];
     }
 }
