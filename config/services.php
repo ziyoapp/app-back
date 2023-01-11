@@ -30,4 +30,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'oper_sms' => [
+        'host' => 'http://83.69.139.182',
+        'port' => '8080',
+        'login' => env('OPER_SMS_LOGIN'),
+        'password' => env('OPER_SMS_PASSWORD')
+    ]
+
 ];

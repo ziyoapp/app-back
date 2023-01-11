@@ -245,4 +245,8 @@ return [
 
     'api_latest'  => '1',
 
+    'sms_test_phone' => env('SMS_TESTING_PHONE_NUMBER'),
+    'sms_test_code' => env('SMS_TESTING_CODE'),
+    'auth_sms_send_limit' => env('SMS_AUTH_SEND_LIMIT', 3),
+
 ];

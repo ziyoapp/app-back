@@ -7,7 +7,7 @@ namespace App\Virtual;
  *      title="User update request",
  *      description="User update request body data",
  *      type="object",
- *      required={"first_name", "last_name", "birth_date", "gender", "phone"}
+ *      required={"first_name", "last_name", "birth_date", "gender"}
  * )
  */
 class UserUpdateRequest
@@ -36,6 +36,17 @@ class UserUpdateRequest
 
     /**
      * @OA\Property(
+     *      title="Patronymic",
+     *      description="Patronymic",
+     *      example="Wick"
+     * )
+     *
+     * @var string
+     */
+    public $patronymic;
+
+    /**
+     * @OA\Property(
      *      title="Birth date",
      *      description="Birth date",
      *      example="20-05-1995"
@@ -48,7 +59,7 @@ class UserUpdateRequest
     /**
      * @OA\Property(
      *      title="Gender",
-     *      description="Gender",
+     *      description="Gender [male|female]",
      *      example="male|female"
      * )
      *
@@ -58,12 +69,33 @@ class UserUpdateRequest
 
     /**
      * @OA\Property(
-     *      title="Phone number",
-     *      description="Phone number",
-     *      example="+998939887070"
+     *      title="Nickname (@asiaCoder)",
+     *      description="Nickname [@asiaCoder]",
+     *      example="@asiaCoder"
      * )
      *
      * @var string
      */
-    public $phone;
+    public $nickname;
+
+    /**
+     * @OA\Property(
+     *      title="Email",
+     *      description="Email",
+     *      example="example@mail.ru"
+     * )
+     *
+     * @var string
+     */
+    public $email;
+
+    /**
+     * @OA\Property(
+     *      title="Доп. инфа",
+     *      description="Доп. инфа"
+     * )
+     *
+     * @var string
+     */
+    public $additional_info;
 }

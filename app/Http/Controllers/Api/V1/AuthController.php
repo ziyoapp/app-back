@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\VerifyType;
+use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserLoginRequest;
 use App\Models\User;
+use App\Models\VerifyCode;
 use App\Services\V1\AuthService;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class AuthController extends Controller
 {
@@ -19,6 +24,50 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->authService = new AuthService();
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/register-verify-code",
+     *      operationId="getVerifyRegisterCode",
+     *      tags={"User"},
+     *      summary="User register verify code",
+     *      description="User register verify code",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/VerifyCodeRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      )
+     * )
+     *
+     * @param UserLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\BadRequestException
+     */
+    public function registerVerifyCode(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^(998)[0-9]{9}$/'
+        ]);
+
+        $code = $this->authService->sendVerifyCode($request->get('phone'), VerifyType::REGISTER);
+
+        $data = [];
+        if (App::environment(['local', 'staging'])) {
+            $data = [
+                'code' => $code
+            ];
+        }
+
+        return response()->json($data);
     }
 
     /**
@@ -51,7 +100,7 @@ class AuthController extends Controller
     public function login(UserLoginRequest $request)
     {
         $token = $this->authService->auth(
-            $request->get('email'),
+            $request->get('phone'),
             $request->get('password')
         );
 
@@ -90,6 +139,17 @@ class AuthController extends Controller
     {
         $registerData = $request->validated();
 
+        /**
+         * @var VerifyCode $verifyCode
+         */
+        $verifyCode = VerifyCode::where('phone', $registerData['phone'])
+            ->whereType(VerifyType::REGISTER)
+            ->first();
+
+        if (empty($verifyCode) || $verifyCode->checkCode($registerData['code']) === false) {
+            throw new BadRequestException(__('bad_request.dont_correct_code'));
+        }
+
         $user = $this->authService->register(array_merge($registerData, [
             'user_lang' => $request->header('x-lang-code', 'ru')
         ]));
@@ -97,6 +157,8 @@ class AuthController extends Controller
         //event(new Registered($user));
 
         $token = auth()->login($user);
+
+        $verifyCode->delete();
 
         return response()->json(
             $this->respondWithToken($token)

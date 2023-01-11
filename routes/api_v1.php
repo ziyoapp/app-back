@@ -16,6 +16,8 @@ Route::group(['middleware' => [
         Route::post('/logout', 'AuthController@logout');
         Route::post('/refresh-token', 'AuthController@refresh');
 
+        Route::post('/change-password', 'UserController@changePassword');
+
         Route::post('/update', 'UserController@userUpdate');
 
         Route::get('/bonus', 'BonusController@getUserBonus');
@@ -75,6 +77,7 @@ Route::group(['middleware' => [
 Route::group(['prefix' => 'user'], function() {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
+    Route::post('/register-verify-code', 'AuthController@registerVerifyCode');
 
     Route::post('/question', 'UserController@userQuestion');
 });

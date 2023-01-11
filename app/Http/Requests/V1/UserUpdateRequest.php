@@ -26,10 +26,12 @@ class UserUpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            //'patronymic' => ['nullable', 'string', 'max:255'],
+            'patronymic' => ['nullable', 'string', 'max:255'],
             'birth_date' => ['required', 'date'],
             'gender' => ['required', 'in:male,female'],
-            'phone' => ['required', 'string', 'regex:/^(\+998)[0-9]{9}$/'],
+            'nickname' => ['nullable', 'string', 'max:50', 'regex:/^@[A-Za-z0-9]+/', 'unique:users,nickname,' . $this->user()->id],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . $this->user()->id],
+            'additional_info' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

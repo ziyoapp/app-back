@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\ChangePasswordRequest;
 use App\Http\Requests\V1\UserQuestionRequest;
 use App\Http\Requests\V1\UserUpdateRequest;
 use App\Http\Resources\V1\UserResource;
@@ -10,6 +12,7 @@ use App\Models\User;
 use App\Services\V1\QRCodeGenerateService;
 use App\Services\V1\UserQuestionService;
 use App\Services\V1\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -37,6 +40,46 @@ class UserController extends Controller
         $user = User::where('id', auth()->id())->first();
 
         return new UserResource($user);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/change-password",
+     *      operationId="changePassword",
+     *      tags={"User"},
+     *      summary="User change password",
+     *      description="User change password",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/ChangePasswordRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      )
+     * )
+     *
+     * @param ChangePasswordRequest $request
+     * @param UserService $userService
+     * @return JsonResponse
+     * @throws BadRequestException
+     */
+    public function changePassword(ChangePasswordRequest $request, UserService $userService)
+    {
+        $userService->changePassword(
+            auth()->id(),
+            $request->get('current_password'),
+            $request->get('new_password')
+        );
+
+        return response()->json([
+            'message' => __('Пароль был успешно изменен')
+        ]);
     }
 
     /**
@@ -74,9 +117,21 @@ class UserController extends Controller
      *      tags={"User"},
      *      summary="User update",
      *      description="User update",
-     *      @OA\RequestBody(
+     *     @OA\RequestBody(
      *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/UserUpdateRequest")
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(ref="#/components/schemas/UserUpdateRequest")
+     *         )
+     *      ),
+     *     @OA\Parameter(
+     *          name="_method",
+     *          description="HTTP PUT: [only - PUT]",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
      *      ),
      *      @OA\Response(
      *          response=200,

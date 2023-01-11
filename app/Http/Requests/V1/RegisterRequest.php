@@ -24,15 +24,16 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            //'patronymic' => ['nullable', 'string', 'max:255'],
-            'birth_date' => ['required', 'date'],
-            'gender' => ['required', 'in:male,female'],
-            'phone' => ['required', 'string', 'regex:/^(\+998)[0-9]{9}$/'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            #'first_name' => ['required', 'string', 'max:255'],
+            #'last_name' => ['required', 'string', 'max:255'],
+            #'patronymic' => ['nullable', 'string', 'max:255'],
+            #'birth_date' => ['required', 'date'],
+            #'gender' => ['required', 'in:male,female'],
+            'phone' => ['required', 'string', 'regex:/^(998)[0-9]{9}$/'],
+            #'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'privacy_accept' => ['accepted']
+            'code' => ['required', 'integer', 'between:1111,9999'],
+            #'privacy_accept' => ['accepted']
         ];
     }
 }

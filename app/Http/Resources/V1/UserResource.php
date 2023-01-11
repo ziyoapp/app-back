@@ -16,12 +16,14 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name,
+            'first_name' => $this->first_name ?? 'User #' . $this->id,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
             'phone' => $this->phone,
-            'birth_date' => $this->birth_date,
+            'birth_date' => !empty($this->birth_date) ? $this->birth_date->format('d.m.Y') : null,
             'gender' => $this->gender,
+            'nickname' => $this->nickname,
+            'additional_info' => $this->additional_info,
             'email' => $this->email,
             'email_verified' => !empty($this->email_verified_at),
             'role' => [
