@@ -7,7 +7,7 @@ namespace App\Virtual;
  *      title="User register request",
  *      description="User register request body data",
  *      type="object",
- *      required={"first_name", "last_name", "birth_date", "gender", "phone", "email", "password", "password_confirm", "privacy_accept"}
+ *      required={"phone", "password", "password_confirm", "code"}
  * )
  */
 class RegisterRequest
