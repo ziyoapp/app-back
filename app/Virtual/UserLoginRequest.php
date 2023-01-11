@@ -7,21 +7,21 @@ namespace App\Virtual;
  *      title="User login request",
  *      description="User login request body data",
  *      type="object",
- *      required={"email", "password"}
+ *      required={"phone", "password"}
  * )
  */
 class UserLoginRequest
 {
     /**
      * @OA\Property(
-     *      title="email",
-     *      description="Email",
-     *      example="example@mail.ru"
+     *      title="Phone number",
+     *      description="Phone number",
+     *      example="998939887070"
      * )
      *
      * @var string
      */
-    public $email;
+    public $phone;
 
     /**
      * @OA\Property(

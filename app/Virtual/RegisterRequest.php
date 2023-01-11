@@ -14,69 +14,14 @@ class RegisterRequest
 {
     /**
      * @OA\Property(
-     *      title="First name",
-     *      description="First name",
-     *      example="John"
-     * )
-     *
-     * @var string
-     */
-    public $first_name;
-
-    /**
-     * @OA\Property(
-     *      title="Last name",
-     *      description="Last name",
-     *      example="Wick"
-     * )
-     *
-     * @var string
-     */
-    public $last_name;
-
-    /**
-     * @OA\Property(
-     *      title="Birth date",
-     *      description="Birth date",
-     *      example="20-05-1995"
-     * )
-     *
-     * @var string
-     */
-    public $birth_date;
-
-    /**
-     * @OA\Property(
-     *      title="Gender",
-     *      description="Gender",
-     *      example="male|female"
-     * )
-     *
-     * @var string
-     */
-    public $gender;
-
-    /**
-     * @OA\Property(
      *      title="Phone number",
      *      description="Phone number",
-     *      example="+998939887070"
+     *      example="998939887070"
      * )
      *
      * @var string
      */
     public $phone;
-
-    /**
-     * @OA\Property(
-     *      title="email",
-     *      description="Email",
-     *      example="example@mail.ru"
-     * )
-     *
-     * @var string
-     */
-    public $email;
 
     /**
      * @OA\Property(
@@ -102,12 +47,12 @@ class RegisterRequest
 
     /**
      * @OA\Property(
-     *      title="Privacy accept",
-     *      description="Privacy accept",
-     *      example="true"
+     *      title="Verify code",
+     *      description="Verify code",
+     *      example="4040"
      * )
      *
-     * @var bool
+     * @var int
      */
-    public $privacy_accept;
+    public $code;
 }
