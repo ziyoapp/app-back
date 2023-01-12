@@ -30,7 +30,7 @@ class UserUpdateRequest extends FormRequest
             'avatar' => ['nullable', 'image', 'mimes:jpg,png,jpeg'],
             'birth_date' => ['required', 'date'],
             'gender' => ['required', 'in:male,female'],
-            'nickname' => ['nullable', 'string', 'max:50', 'regex:/^@[A-Za-z0-9]+/', 'unique:users,nickname,' . $this->user()->id],
+            'nickname' => ['nullable', 'string', 'max:50', 'regex:/[A-Za-z0-9]+/', 'unique:users,nickname,' . $this->user()->id],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . $this->user()->id],
             'additional_info' => ['nullable', 'string', 'max:1000'],
         ];

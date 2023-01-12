@@ -81,7 +81,7 @@ class UserUpdateRequest
      * @OA\Property(
      *      title="Nickname (@asiaCoder)",
      *      description="Nickname [@asiaCoder]",
-     *      example="@asiaCoder"
+     *      example="asiaCoder"
      * )
      *
      * @var string
