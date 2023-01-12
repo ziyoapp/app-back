@@ -47,6 +47,16 @@ class UserUpdateRequest
 
     /**
      * @OA\Property(
+     *      title="Upload user avatar",
+     *     format="binary"
+     * )
+     *
+     * @var string
+     */
+    public $avatar;
+
+    /**
+     * @OA\Property(
      *      title="Birth date",
      *      description="Birth date",
      *      example="20-05-1995"
