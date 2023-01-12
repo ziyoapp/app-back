@@ -24,13 +24,14 @@ class AuthService
     public function sendVerifyCode(string $phone, string $verifyType): int
     {
         $isFakePhoneForTesting = !!(config('app.sms_test_phone') == $phone);
+        $user = User::where('phone', $phone)->first();
 
-        if ($verifyType === VerifyType::REGISTER) {
-            $user = User::where('phone', $phone)->first();
+        if ($verifyType === VerifyType::REGISTER && !empty($user)) {
+            throw new BadRequestException(__('bad_request.user_already_exists'));
+        }
 
-            if (!empty($user)) {
-                throw new BadRequestException(__('bad_request.user_already_exists'));
-            }
+        if ($verifyType === VerifyType::RESET_PASSWORD && empty($user)) {
+            throw new BadRequestException(__('bad_request.not_found_user'));
         }
 
         $verifyCode = VerifyCode::where('phone', $phone)->where('type', $verifyType)->first();

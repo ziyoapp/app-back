@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\VerifyCode;
 use App\Services\V1\AuthService;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -48,7 +49,6 @@ class AuthController extends Controller
      *      )
      * )
      *
-     * @param UserLoginRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \App\Exceptions\BadRequestException
      */
@@ -132,8 +132,9 @@ class AuthController extends Controller
      *      )
      * )
      *
-     * @param UserLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param RegisterRequest $request
+     * @return JsonResponse
+     * @throws BadRequestException
      */
     public function register(RegisterRequest $request)
     {

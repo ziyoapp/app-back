@@ -68,4 +68,21 @@ class UserService
 
         return $user;
     }
+
+    public function resetPassword(string $phone, string $newPassword): User
+    {
+        /**
+         * @var User $user
+         */
+        $user = User::where('phone', $phone)->first();
+
+        if (empty($user)) {
+            throw new BadRequestException(__('bad_request.not_found_user'));
+        }
+
+        $user->password = bcrypt($newPassword);
+        $user->save();
+
+        return $user;
+    }
 }

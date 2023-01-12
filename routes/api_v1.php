@@ -78,6 +78,8 @@ Route::group(['prefix' => 'user'], function() {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
     Route::post('/register-verify-code', 'AuthController@registerVerifyCode');
+    Route::post('/reset-verify-code', 'UserController@passwordResetVerifyCode');
+    Route::post('/password-reset', 'UserController@passwordReset');
 
     Route::post('/question', 'UserController@userQuestion');
 });

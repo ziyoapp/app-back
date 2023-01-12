@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\VerifyType;
 use App\Exceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ChangePasswordRequest;
+use App\Http\Requests\V1\PasswordResetRequest;
+use App\Http\Requests\V1\PhoneNumberRequest;
+use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserQuestionRequest;
 use App\Http\Requests\V1\UserUpdateRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
+use App\Models\VerifyCode;
+use App\Services\V1\AuthService;
 use App\Services\V1\QRCodeGenerateService;
 use App\Services\V1\UserQuestionService;
 use App\Services\V1\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class UserController extends Controller
 {
@@ -79,6 +86,99 @@ class UserController extends Controller
 
         return response()->json([
             'message' => __('Пароль был успешно изменен')
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/reset-verify-code",
+     *      operationId="getResetVerifyCode",
+     *      tags={"User"},
+     *      summary="User password reset verify code",
+     *      description="User password reset verify code",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/VerifyCodeRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      )
+     * )
+     *
+     * @param PhoneNumberRequest $request
+     * @param AuthService $authService
+     * @return JsonResponse
+     * @throws BadRequestException
+     */
+    public function passwordResetVerifyCode(PhoneNumberRequest $request, AuthService $authService)
+    {
+        $code = $authService->sendVerifyCode($request->get('phone'), VerifyType::RESET_PASSWORD);
+
+        $data = [];
+        if (App::environment(['local', 'staging'])) {
+            $data = [
+                'code' => $code
+            ];
+        }
+
+        return response()->json($data);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/password-reset",
+     *      operationId="userPassRecovery",
+     *      tags={"User"},
+     *      summary="User password reset",
+     *      description="User password reset",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/PasswordResetRequest")
+     *      ),
+     *     @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/BadRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     *
+     * @param PasswordResetRequest $request
+     * @param UserService $userService
+     * @return JsonResponse
+     * @throws BadRequestException
+     */
+    public function passwordReset(PasswordResetRequest $request, UserService $userService)
+    {
+        $data = $request->validated();
+
+        /**
+         * @var VerifyCode $verifyCode
+         */
+        $verifyCode = VerifyCode::where('phone', $data['phone'])
+            ->whereType(VerifyType::RESET_PASSWORD)
+            ->first();
+
+        if (empty($verifyCode) || $verifyCode->checkCode($data['code']) === false) {
+            throw new BadRequestException(__('bad_request.dont_correct_code'));
+        }
+
+        $userService->resetPassword($data['phone'], $data['password']);
+
+        $verifyCode->delete();
+
+        return response()->json([
+            'message' => __('Пароль был успешно сброшен')
         ]);
     }
 
