@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait UploadImage
 {
-    protected function uploadPicture(Model $model, UploadedFile $image)
+    protected function uploadPicture(Model $model, UploadedFile $image, string $mediaCollectionName = 'default')
     {
-        $model->addMedia($image)->toMediaCollection('default');
+        $model->addMedia($image)->toMediaCollection($mediaCollectionName);
     }
 }

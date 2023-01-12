@@ -5,12 +5,15 @@ namespace App\Services\V1;
 use App\Enums\UserRole;
 use App\Exceptions\BadRequestException;
 use App\Models\User;
+use App\Services\Traits\UploadImage;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    use UploadImage;
+
     public function update(int $userId, array $userData): User
     {
         /**
@@ -28,6 +31,17 @@ class UserService
         $user->additional_info = $userData['additional_info'] ?? null;
 
         $user->save();
+
+        if (!empty($userData['avatar'])) {
+            $imgMedia = $user->getMedia('avatar')->first();
+
+            if (!empty($imgMedia)) {
+                $imgMedia->delete();
+            }
+
+            $this->uploadPicture($user, $userData['avatar'], 'avatar');
+            $user->load('media');
+        }
 
         return $user;
     }

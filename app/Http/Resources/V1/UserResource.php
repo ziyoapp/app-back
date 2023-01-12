@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name ?? 'User #' . $this->id,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,
+            'avatar' => $this->getFirstMediaUrl('avatar') ?? '',
             'phone' => $this->phone,
             'birth_date' => !empty($this->birth_date) ? $this->birth_date->format('d.m.Y') : null,
             'gender' => $this->gender,
