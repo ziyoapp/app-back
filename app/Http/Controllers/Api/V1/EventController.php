@@ -227,19 +227,19 @@ class EventController extends Controller
             [
                 'id' => 'free',
                 'name' => __('Бесплатные'),
-                'events_count' => $event
+                'events_count' => Event::query()->where('status', EntityStatus::PUBLISHED)
                     ->whereIn('price_ball', [0, null])->count()
             ],
             [
                 'id' => 'exclusive',
                 'name' => __('Эксклюзивные'),
-                'events_count' => $event
+                'events_count' => Event::query()->where('status', EntityStatus::PUBLISHED)
                     ->where('price_ball', '>', 0)->count()
             ],
             [
                 'id' => 'past',
                 'name' => __('Прошедшие'),
-                'events_count' => $event
+                'events_count' => Event::query()->where('status', EntityStatus::PUBLISHED)
                     ->where('date_start_at', '<', now()->toDateTimeString())->count()
             ]
         ]);
