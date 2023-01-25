@@ -13,6 +13,7 @@ use App\Http\Resources\V1\EventsResource;
 use App\Models\BonusLog;
 use App\Models\BonusLogProp;
 use App\Models\Event;
+use App\Notifications\UserEventRegistered;
 use App\Services\V1\BonusLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -381,6 +382,9 @@ class EventController extends Controller
      */
     public function addUser($id)
     {
+        /**
+         * @var Event $event
+         */
         $event = Event::query()
             ->withCount('users')
             ->where('status', EntityStatus::PUBLISHED)
@@ -398,6 +402,8 @@ class EventController extends Controller
         $event->users()->sync([
             auth()->id() => ['price_ball' => $event->price_ball]
         ]);
+
+        auth()->user()->notify(new UserEventRegistered($event));
 
         return response()->json();
     }

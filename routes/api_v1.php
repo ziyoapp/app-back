@@ -24,6 +24,10 @@ Route::group(['middleware' => [
         Route::get('/qr-code', 'UserController@getQRCode');
 
         Route::get('/bonus-history', 'BonusController@userBonusHistory');
+
+        Route::get('/notifications', 'UserController@notifications');
+        Route::post('/notifications/{uuid}/read', 'UserController@readNotification');
+        Route::post('/notifications/read-all', 'UserController@readAllNotifications');
     });
 
     // News

@@ -11,6 +11,7 @@ use App\Http\Requests\V1\PhoneNumberRequest;
 use App\Http\Requests\V1\RegisterRequest;
 use App\Http\Requests\V1\UserQuestionRequest;
 use App\Http\Requests\V1\UserUpdateRequest;
+use App\Http\Resources\V1\NotificationResource;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use App\Models\VerifyCode;
@@ -20,6 +21,7 @@ use App\Services\V1\UserQuestionService;
 use App\Services\V1\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 
 class UserController extends Controller
@@ -294,5 +296,93 @@ class UserController extends Controller
         $userQuestionService->store($validatedData);
 
         return response()->noContent(200);
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/question",
+     *      operationId="userQuestion",
+     *      tags={"User"},
+     *      summary="User question",
+     *      description="User question",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UserQuestionRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     *
+     * @param UserQuestionRequest $request
+     * @param UserQuestionService $userQuestionService
+     * @return \Illuminate\Http\Response
+     */
+    public function notifications(Request $request)
+    {
+        $perPage = (int) $request->get('per_page', 15);
+
+        return NotificationResource::collection(auth()->user()->notifications()->paginate($perPage));
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/notifications/read-all",
+     *      operationId="notifyReadAll",
+     *      tags={"User notifications"},
+     *      summary="Mark as read all notifications",
+     *      description="Mark as read all notifications",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function readAllNotifications()
+    {
+        auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+
+        return response()->json();
+    }
+
+    /**
+     * @OA\Post(
+     *      path="/user/notifications/{uuid}/read",
+     *      operationId="notifyRead",
+     *      tags={"User notifications"},
+     *      summary="Mark as read notification by id",
+     *      description="Mark as read notification by id",
+     *     @OA\Parameter(
+     *          name="uuid",
+     *          description="Notification id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       )
+     * )
+     *
+     * @return JsonResponse
+     */
+    public function readNotification($uuid)
+    {
+        auth()->user()->unreadNotifications()->where('id', $uuid)->update(['read_at' => now()]);
+
+        return response()->json([
+            'id' => $uuid
+        ]);
     }
 }
