@@ -299,30 +299,36 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *      path="/user/question",
-     *      operationId="userQuestion",
-     *      tags={"User"},
-     *      summary="User question",
-     *      description="User question",
-     *      @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/UserQuestionRequest")
+     * @OA\Get(
+     *      path="/user/notifications",
+     *      operationId="getUserNotifications",
+     *      tags={"User notifications"},
+     *      summary="Get list of notifications",
+     *      description="Returns list of notifications",
+     *     @OA\Parameter(
+     *          name="page",
+     *          description="Page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="per_page",
+     *          description="Per page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"
-     *       ),
-     *      @OA\Response(
-     *          response=422,
-     *          description="Bad Request",
-     *          @OA\JsonContent(ref="#/components/schemas/Validate")
-     *      )
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/NotificationPagination")
+     *       )
      * )
-     *
-     * @param UserQuestionRequest $request
-     * @param UserQuestionService $userQuestionService
-     * @return \Illuminate\Http\Response
      */
     public function notifications(Request $request)
     {
