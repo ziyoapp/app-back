@@ -60,6 +60,27 @@ class User
 
     /**
      * @OA\Property(
+     *      title="Avatar pic",
+     *      description="Avatar pic"
+     * )
+     *
+     * @var string
+     */
+    public $avatar;
+
+    /**
+     * @OA\Property(
+     *      title="Nickname",
+     *      description="Nickname",
+     *      example="john0101"
+     * )
+     *
+     * @var string
+     */
+    public $nickname;
+
+    /**
+     * @OA\Property(
      *      title="Phone",
      *      description="Phone",
      *      example="998939604040"
@@ -90,6 +111,16 @@ class User
      * @var string
      */
     public $gender;
+
+    /**
+     * @OA\Property(
+     *      title="Addition text info",
+     *      description="Addition text info"
+     * )
+     *
+     * @var string
+     */
+    public $additional_info;
 
     /**
      * @OA\Property(

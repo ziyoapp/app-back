@@ -58,5 +58,11 @@ Route::group(['middleware' => [
         Route::delete('/{id}', 'StoriesController@delete');
     });
 
+    // Stories
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', 'UserController@list');
+        Route::get('/{id}', 'UserController@getUser');
+    });
+
     Route::delete('/image/{id}', 'ProductController@deleteImage');
 });
