@@ -7,6 +7,7 @@ use App\Http\Requests\EventCreateRequest;
 use App\Http\Requests\EventUpdateRequest;
 use App\Http\Requests\ListRequest;
 use App\Http\Resources\EventResource;
+use App\Http\Resources\UserResource;
 use App\Models\Event;
 use App\Models\News;
 use App\Services\EventService;
@@ -14,6 +15,62 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/dashboard/events/{id}/registered-users",
+     *      operationId="getDashEventUsersList",
+     *      tags={"Dashboard Events"},
+     *      summary="Get event registered users list",
+     *      description="Return event registered users list",
+     *     @OA\Parameter(
+     *          name="sort",
+     *          description="Sort by published at [asc, desc]",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="page",
+     *          description="Page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="per_page",
+     *          description="Per page",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/DashboardUsersPagination")
+     *       ),
+     *     @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     */
+    public function eventRegisteredUsers(int $eventId, Request $request)
+    {
+        $perPage = (int) $request->get('per_page', 15);
+        $sort = (string) $request->get('sort', 'desc');
+
+        $users = Event::findOrFail($eventId)->users()->orderBy('id', $sort)->paginate($perPage);
+
+        return UserResource::collection($users);
+    }
+
     /**
      * @OA\Get(
      *      path="/dashboard/events/{id}",

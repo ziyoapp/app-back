@@ -22,6 +22,8 @@ Route::group(['middleware' => [
 
     // Events
     Route::group(['prefix' => 'events'], function () {
+        Route::get('/{id}/registered-users', 'EventController@eventRegisteredUsers');
+
         Route::get('/list', 'EventController@list');
         Route::post('/', 'EventController@create');
         Route::get('/{id}', 'EventController@item');
@@ -58,7 +60,7 @@ Route::group(['middleware' => [
         Route::delete('/{id}', 'StoriesController@delete');
     });
 
-    // Stories
+    // Users
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'UserController@list');
         Route::get('/{id}', 'UserController@getUser');
