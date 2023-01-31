@@ -63,6 +63,11 @@ Route::group(['middleware' => [
             Route::post('{id}/buy', 'ProductController@productBuy');
         });
     });
+
+    // Stories
+    Route::group(['prefix' => 'stories'], function() {
+        Route::get('/', 'StoriesController@getStories');
+    });
 });
 
 Route::group(['middleware' => [
