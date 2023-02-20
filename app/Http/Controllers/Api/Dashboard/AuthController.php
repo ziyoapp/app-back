@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Exceptions\BadRequestException;
-use App\Http\Requests\V1\UserLoginRequest;
+use App\Http\Requests\UserLoginRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 
