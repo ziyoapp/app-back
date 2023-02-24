@@ -32,6 +32,7 @@ class ProductCreateRequest extends FormRequest
             'price' => ['required', 'integer'],
             'price_old' => ['nullable', 'integer'],
             'quantity' => ['required', 'integer'],
+            'is_popular' => ['nullable', 'boolean'],
             'category_id' => ['required', 'exists:product_categories,id'],
             #'images' => ['required', 'array'],
             'images.*' => ['image', 'mimes:jpg,png,jpeg'],

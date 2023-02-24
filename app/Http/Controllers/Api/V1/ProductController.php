@@ -159,4 +159,28 @@ class ProductController extends Controller
 
         return ProductListResource::collection($products);
     }
+
+    /**
+     * @OA\Get(
+     *      path="/shop/products/popular",
+     *      operationId="getPopularProducts",
+     *      tags={"Shop"},
+     *      summary="Get popular products",
+     *      description="Get popular products",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/ProductsCollection")
+     *       )
+     * )
+     */
+    public function getPopularProducts()
+    {
+        $products = Product::query()
+            ->where('is_popular', true)
+            ->limit(50)
+            ->get();
+
+        return ProductListResource::collection($products);
+    }
 }

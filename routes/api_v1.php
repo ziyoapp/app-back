@@ -60,6 +60,7 @@ Route::group(['middleware' => [
         Route::group(['prefix' => 'products'], function() {
             Route::get('{id}', 'ProductController@product');
             Route::get('/random', 'ProductController@getRandomProducts');
+            Route::get('/popular', 'ProductController@getPopularProducts');
             Route::post('{id}/buy', 'ProductController@productBuy');
         });
     });

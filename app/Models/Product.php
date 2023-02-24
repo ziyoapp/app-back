@@ -20,6 +20,7 @@ class Product extends Model implements HasMedia
         'price',
         'price_old',
         'quantity',
+        'is_popular',
         'sort',
         'status',
     ];
@@ -29,6 +30,7 @@ class Product extends Model implements HasMedia
         'price_old' => 'float',
         'quantity' => 'int',
         'sort' => 'int',
+        'is_popular' => 'boolean'
     ];
 
     protected $with = ['media', 'categories'];
