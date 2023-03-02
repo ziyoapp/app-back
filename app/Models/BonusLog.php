@@ -14,6 +14,7 @@ class BonusLog extends Model
         'ball',
         'operation',
         'type',
+        'status',
         'comment'
     ];
 
@@ -22,6 +23,11 @@ class BonusLog extends Model
     ];
 
     protected $with = ['props'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function props()
     {

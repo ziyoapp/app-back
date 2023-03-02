@@ -2,9 +2,14 @@
 
 namespace App\Services;
 
+use App\Enums\BonusLogStatus;
+use App\Enums\BonusLogType;
+use App\Models\Bonus;
+use App\Models\BonusLog;
 use App\Models\Event;
 use App\Models\Product;
 use App\Services\Traits\UploadImage;
+use App\Services\V1\BonusLogService;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
@@ -71,6 +76,34 @@ class ProductService
     {
         $products = Product::withoutGlobalScope('published')->orderBy('sort', $order);
         return $products->paginate($perPage);
+    }
+
+    public function listProductOrders(int $perPage = 15, string $order = 'desc')
+    {
+        return BonusLog::query()->with('user')->where('type', BonusLogType::PRODUCT)
+                ->orderBy('id', $order)
+                ->paginate($perPage);
+    }
+
+    public function orderStatusChange(int $orderId, string $status): BonusLog
+    {
+        /**
+         * @var BonusLog $productOrder
+         */
+        $productOrder = BonusLog::query()->with('user')->findOrFail($orderId);
+
+        if (!empty($productOrder->status) && in_array($productOrder->status, [BonusLogStatus::COMPLETED, BonusLogStatus::CANCELED])) {
+            return $productOrder;
+        }
+
+        $productOrder->status = $status;
+        $productOrder->save();
+
+        if (BonusLogStatus::CANCELED === $status) {
+            Bonus::query()->where('user_id', $productOrder->user_id)->increment('ball', abs($productOrder->ball));
+        }
+
+        return $productOrder;
     }
 
     public function listByCategory(int $categoryId, int $perPage = 15, string $order = 'desc')

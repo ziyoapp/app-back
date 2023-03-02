@@ -9,7 +9,7 @@ Route::pattern('id', '[0-9]+');
 Route::post('/login', 'AuthController@dashboardLogin');
 
 Route::group(['middleware' => [
-    'auth', UserRole::middleware([UserRole::ADMIN, UserRole::MODERATOR])
+
 ]], function() {
     // News
     Route::group(['prefix' => 'news'], function () {
@@ -49,6 +49,9 @@ Route::group(['middleware' => [
         Route::get('/{id}', 'ProductController@getItem');
         Route::put('/{id}', 'ProductController@update');
         Route::delete('/{id}', 'ProductController@delete');
+
+        Route::get('/orders', 'ProductController@getOrders');
+        Route::post('/order-status', 'ProductController@productOrderStatus');
     });
 
     // Stories
