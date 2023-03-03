@@ -54,7 +54,7 @@ class ProductController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardProductPagination")
+     *          @OA\JsonContent(ref="#/components/schemas/ProductOrderPagination")
      *       ),
      *     @OA\Response(
      *          response=422,
@@ -83,15 +83,12 @@ class ProductController extends Controller
      *      description="Order status change",
      *     @OA\RequestBody(
      *          required=true,
-     *          @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(ref="#/components/schemas/DashboardProductRequest")
-     *         )
+     *          @OA\JsonContent(ref="#/components/schemas/ProductOrderStatusRequest")
      *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(ref="#/components/schemas/DashboardProductResource")
+     *          @OA\JsonContent(ref="#/components/schemas/ProductOrderResource")
      *       ),
      *     @OA\Response(
      *          response=422,
