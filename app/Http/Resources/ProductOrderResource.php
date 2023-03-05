@@ -25,10 +25,10 @@ class ProductOrderResource extends JsonResource
                 'patronymic' => $this->user->patronymic,
                 'phone' => $this->user->phone
             ],
-            'product' => [
+            'product' => !empty($product) ? [
                 'id' => $product->id,
                 'name' => $product->name,
-            ],
+            ] : [],
             'total_score' => abs($this->ball),
             'order_status' => $this->status ?: BonusLogStatus::NEW
         ];
