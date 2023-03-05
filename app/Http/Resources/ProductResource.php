@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'price_old' => $this->price_old,
             'quantity' => $this->quantity,
             'category_id' => $this->categories->first()->id ?: null,
+            'is_popular' => $this->is_popular,
             'pictures' => $this->media->map(function ($media) {
                 return [
                     'id' => $media->id,
