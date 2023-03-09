@@ -21,6 +21,7 @@ class ProductOrderResource extends JsonResource
             'id' => $this->id,
             'qwwq123123' => '',
             'qweqwe' => '',
+            'wqeqw' => '123',
             'user' => [
                 'first_name' => $this->user->first_name,
                 'last_name' => $this->user->last_name,
