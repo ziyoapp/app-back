@@ -27,6 +27,7 @@ class AddFcmTokenColumnToUsersTable extends Migration
      */
     public function down()
     {
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('fcm_token');
         });
