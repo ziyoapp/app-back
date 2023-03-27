@@ -28,6 +28,8 @@ Route::group(['middleware' => [
         Route::get('/notifications', 'UserController@notifications');
         Route::post('/notifications/{uuid}/read', 'UserController@readNotification');
         Route::post('/notifications/read-all', 'UserController@readAllNotifications');
+
+        Route::patch('/push-token', 'UserController@updatePushToken')->name('pushToken');
     });
 
     // News

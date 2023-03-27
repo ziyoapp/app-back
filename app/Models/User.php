@@ -31,6 +31,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
         'birth_date',
         'gender',
         'password',
+        'fcm_token',
         'email',
         'role_id',
         'events_push_enabled',
@@ -45,6 +46,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
      */
     protected $hidden = [
         'password',
+        'fcm_token'
     ];
 
     /**
@@ -88,5 +90,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
         $this
             ->addMediaCollection('avatar')
             ->singleFile();
+    }
+
+    /**
+     * Specifies the user's FCM token
+     *
+     * @return string|array
+     */
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_token;
     }
 }
