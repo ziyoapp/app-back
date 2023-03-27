@@ -392,20 +392,46 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Patch(
+     *      path="/user/push-token",
+     *      operationId="userPushToken",
+     *      tags={"User"},
+     *      summary="User push token save",
+     *      description="User push token save",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/PushTokenSaveRequest")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Bad Request",
+     *          @OA\JsonContent(ref="#/components/schemas/Validate")
+     *      )
+     * )
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\BadRequestException
+     */
     public function updatePushToken(Request $request)
     {
+        $request->validate([
+            'token' => ['required', 'string']
+        ]);
+
         try {
             $request->user()->update(['fcm_token' => $request->token]);
 
-            return response()->json([
-                'success' => true
-            ]);
+            return response()->json();
         } catch (\Exception $e) {
             report($e);
 
-            return response()->json([
-                'success' => false
-            ],500);
+            return response()->json([], 500);
         }
     }
 }
