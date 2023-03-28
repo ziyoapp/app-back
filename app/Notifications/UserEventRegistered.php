@@ -48,6 +48,7 @@ class UserEventRegistered extends Notification implements ShouldQueue
     public function toFcm($notifiable)
     {
         return FcmMessage::create()
+            ->setData(['type' => 'event', 'id' => $this->event->id])
             ->setNotification(
                 \NotificationChannels\Fcm\Resources\Notification::create()
                     ->setTitle(__('Регистрация на событие'))
