@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('reset:verifyCodes')->everyMinute()->withoutOverlapping();
 
-        $schedule->command('queue:work')->everyMinute()->withoutOverlapping();
+        $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping();
     }
 
     /**
