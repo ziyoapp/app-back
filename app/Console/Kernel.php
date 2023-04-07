@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('reset:verifyCodes')->everyMinute()->withoutOverlapping();
+
+        $schedule->command('queue:work --once')->everyMinute()->withoutOverlapping();
     }
 
     /**
