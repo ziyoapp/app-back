@@ -53,15 +53,16 @@ class UserEventRegistered extends Notification implements ShouldQueue
                 \NotificationChannels\Fcm\Resources\Notification::create()
                     ->setTitle(__('Регистрация на событие'))
                     ->setBody(__('Вы подписались на событие') . ': ' . $this->event->title)
-            )
-            ->setAndroid(
-                AndroidConfig::create()
-                    ->setFcmOptions(AndroidFcmOptions::create()->setAnalyticsLabel('analytics'))
-                    ->setNotification(AndroidNotification::create()->setColor('#0A0A0A'))
-            )->setApns(
-                ApnsConfig::create()
-                    ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios'))
             );
+
+//            ->setAndroid(
+//                AndroidConfig::create()
+//                    ->setFcmOptions(AndroidFcmOptions::create()->setAnalyticsLabel('analytics'))
+//                    ->setNotification(AndroidNotification::create()->setColor('#0A0A0A'))
+//            )->setApns(
+//                ApnsConfig::create()
+//                    ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios'))
+//            );
     }
 
 
