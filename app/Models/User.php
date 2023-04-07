@@ -45,8 +45,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'fcm_token'
+        'password'
     ];
 
     /**
