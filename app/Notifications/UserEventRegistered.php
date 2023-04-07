@@ -61,7 +61,7 @@ class UserEventRegistered extends Notification implements ShouldQueue
             )->setApns(
                 ApnsConfig::create()
                     ->setFcmOptions(ApnsFcmOptions::create()->setAnalyticsLabel('analytics_ios'))
-            )->setTopic('events');
+            );
     }
 
 
