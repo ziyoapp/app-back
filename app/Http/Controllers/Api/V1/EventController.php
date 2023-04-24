@@ -176,6 +176,7 @@ class EventController extends Controller
     {
         $events = Event::query()->where('status', EntityStatus::PUBLISHED);
         $perPage = (int) $request->get('per_page', 15);
+        $sort = $request->get('order', 'asc');
 
         switch ($eventCategoryId) {
             case 'new':
@@ -191,6 +192,8 @@ class EventController extends Controller
                 $events->where('date_start_at', '<', now()->toDateTimeString());
                 break;
         }
+
+        $events->orderBy('id', $sort);
 
         return EventsListResource::collection($events->paginate($perPage));
     }
